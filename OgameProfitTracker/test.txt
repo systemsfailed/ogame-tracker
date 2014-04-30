@@ -1,0 +1,48 @@
+On (25.04.2014 22:41:40) the following fleets met in battle
+
+Kerrigan vs. kaour
+Attacker Kerrigan [1:62:4] Weapons: 80% Shields: 80% Armour: 90%
+Type 	L.Cargo 	Battleship
+Total 	10 	20
+Weapons 	9 	1.800
+Shields 	45 	360
+Armour 	2.280 	11.400
+Defender kaour [1:74:9] Weapons: 90% Shields: 90% Armour: 90%
+Type 	L.Laser 	H.Laser 	Gauss 	Ion C.
+Total 	3 	2 	2 	2
+Weapons 	190 	475 	2.090 	285
+Shields 	48 	190 	380 	950
+Armour 	380 	1.520 	6.650 	1.520
+
+The attacking fleet fires 30 times at the defender, with a total firepower of 36.090. The defender`s shields absorb 3.222 damage points.
+
+The defending fleet fires 9 times at the attacker, with a total firepower of 6.270. The attacker`s shields absorb 2.082 damage points.
+Attacker Kerrigan [1:62:4]
+Type 	L.Cargo 	Battleship
+Total 	10 	20
+Weapons 	9 	1.800
+Shields 	45 	360
+Armour 	2.280 	11.400
+Defender kaour [1:74:9]
+Type 	Gauss
+Total 	2
+Weapons 	2.090
+Shields 	380
+Armour 	6.650
+
+The attacking fleet fires 30 times at the defender, with a total firepower of 36.090. The defender`s shields absorb 773 damage points.
+
+The defending fleet fires 2 times at the attacker, with a total firepower of 4.180. The attacker`s shields absorb 405 damage points.
+Attacker Kerrigan [1:62:4]
+Type 	L.Cargo 	Battleship
+Total 	9 	20
+Weapons 	9 	1.800
+Shields 	45 	360
+Armour 	2.280 	11.400
+Defender kaour destroyed.
+
+The attacker has won the battle! He captured 111.553 metal, 99.715 crystal and 29.039 deuterium.
+
+The attacker lost a total of 12.000 units.
+The defender lost a total of 112.000 units.
+At these space coordinates now float 4.200 metal and 4.200 crystal.
