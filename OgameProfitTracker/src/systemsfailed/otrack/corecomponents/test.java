@@ -1,4 +1,4 @@
-package coreComponents;
+package systemsfailed.otrack.corecomponents;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,11 +33,10 @@ public class test {
 		
 		pro.addRaid(raid);
 		pro.addRaid(raid2);
-
 		
 		Profile pro2 = new Profile(pro.toString());
 		
-		System.out.printf("%d", pro.getRaids());
+		System.out.printf("%s", pro2.getPlayers().get(0).getPlanets().get(0));
 		
 	}
 }

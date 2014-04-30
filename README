@@ -10,3 +10,11 @@ Progress Log
 4/30 -- Created git repository
 	Basic read function created
 	Save/Load system started
+4/30 -- Created Player class
+		-Player:
+			An additional way to sort your attacks contains
+			all of the attacks performed against an 					individual player and their planets. 
+	-- Added Comments to all Classes
+	-- Edited Raid generation to reduce number of lines
+	-- Fixed Date not being created when reading from 
+		Raid ToString() method

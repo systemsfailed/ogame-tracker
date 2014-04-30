@@ -1,4 +1,4 @@
-package guiCore;
+package systemsfailed.otrack.guicore;
 
 import java.awt.EventQueue;
 
