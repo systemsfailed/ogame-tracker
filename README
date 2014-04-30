@@ -1,0 +1,12 @@
+Welcome to the Ogame Profit Tracker!
+
+This project aims to create a comprehensive tool to track 
+combat reports in the online browsergame Ogame.
+It will contain functionality to read in any number of combat reports and sort them by the day they were launched.
+Providing you with an overview of each day and the profits and losses incured. As well as creating tables of each player and planet you've attacked to get a quick overview of which planets/farms are the most profitable.
+
+
+Progress Log
+4/30 -- Created git repository
+	Basic read function created
+	Save/Load system started
