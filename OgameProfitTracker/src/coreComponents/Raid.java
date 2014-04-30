@@ -76,7 +76,7 @@ public class Raid {
 		
 		temp.replaceFirst(".", " ");
 		
-		year = Integer.parseInt(temp.substring(temp.indexOf(".", temp.indexOf(".") + 1) + 1, temp.indexOf(".", temp.indexOf(".") + 1) + 5));
+		year = Integer.parseInt(temp.substring(temp.indexOf(".", temp.indexOf(".") + 1) + 1, temp.indexOf(".", temp.indexOf(".") + 1) + 5)) - 1900;
 		
 		date = new Date(year, month, day);
 		

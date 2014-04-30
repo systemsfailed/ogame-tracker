@@ -14,44 +14,31 @@ public class Day {
 	private int crystal;
 	private int deuterium;
 	private int losses;
+	private int damage;
 	
-	public Day(Raid raid)
+	public ArrayList<Raid> getRaids() 
 	{
-		raids = new ArrayList<Raid>();
-		raids.add(raid);
-		date = raid.getDate();
-		metal = raid.getMetal();
-		crystal = raid.getCrystal();
-		deuterium = raid.getDeuterium();
-		losses = raids.get(0).getLosses();
-		
+		return raids;
 	}
-	
-	public void updateRes()
+
+	public int getMetal() 
 	{
-		metal = crystal = deuterium = 0;
-		
-		for(int i = 0; i < raids.size(); i++)
-		{
-			metal += raids.get(i).getMetal();
-			crystal += raids.get(i).getCrystal();
-			deuterium += raids.get(i).getDeuterium();
-		}
-		
+		return metal;
 	}
-	
-	public void updateGains()
+
+	public int getCrystal() 
 	{
-		gains = metal+crystal+deuterium;
+		return crystal;
 	}
-	
-	public void updateLosses()
+
+	public int getDeuterium() 
 	{
-		losses = 0;
-		for(int i = 0; i < raids.size(); i++)
-		{
-			losses += raids.get(i).getLosses();
-		}
+		return deuterium;
+	}
+
+	public int getLosses() 
+	{
+		return losses;
 	}
 	
 	public int getNetGains()
@@ -64,21 +51,56 @@ public class Day {
 		return gains;
 	}
 	
+	public int getNumRaids()
+	{
+		return raids.size();
+	}
+	
+	public int getDamage()
+	{
+		return damage;
+	}
+	
 	public Date getDate()
 	{
 		return date;
+	}
+
+	public Day(Raid raid)
+	{
+		raids = new ArrayList<Raid>();
+		raids.add(raid);
+		this.date = raid.getDate();
+		update();
+		
+	}
+	
+	public void update()
+	{
+		metal = crystal = deuterium = losses = damage = 0;
+		
+		for(int i = 0; i < raids.size(); i++)
+		{
+			metal += raids.get(i).getMetal();
+			crystal += raids.get(i).getCrystal();
+			deuterium += raids.get(i).getDeuterium();
+			losses += raids.get(i).getLosses();
+			damage += raids.get(i).getDamage();
+		}
+		gains = metal+crystal+deuterium;
+		
 	}
 	
 	public void removeRaid(int index)
 	{
 		raids.remove(index);
+		update();
 	}
 	
 	public void addRaid(Raid raid)
 	{
 		raids.add(raid);
-		updateRes();
-		updateGains();
+		update();
 	}
 	
 	public String toString()
