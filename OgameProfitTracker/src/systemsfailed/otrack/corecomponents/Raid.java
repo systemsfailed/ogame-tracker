@@ -115,15 +115,16 @@ public class Raid {
 			temp = reader.readLine();
 		
 			day = Integer.parseInt(temp.substring(temp.indexOf("(")+1, temp.indexOf(".")));
-		
+
 			month = Integer.parseInt(temp.substring(temp.indexOf(".") + 1, temp.indexOf(".", temp.indexOf(".") + 1)));
-		
+
 			temp.replaceFirst(".", " ");
 		
 			year = Integer.parseInt(temp.substring(temp.indexOf(".", temp.indexOf(".") + 1) + 1, temp.indexOf(".", temp.indexOf(".") + 1) + 5)) - 1900;
 		
 			date = new Date(year, month, day);
 		
+			System.out.printf("%d %d %d", date.getMonth(), date.getDate(), date.getYear() + 1900);
 		
 			while((temp = reader.readLine())!= null)
 			{

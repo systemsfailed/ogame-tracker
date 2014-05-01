@@ -8,14 +8,19 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
+import systemsfailed.otrack.guicore.DayOverviewPanel;
+
 
 public class test {
 
 	public static void main(String[] args) throws FileNotFoundException
 	{
-				
+			
+		Scanner scanner = new Scanner(new File("testin")).useDelimiter("//A");
 		Profile pro = new Profile();
 		pro.setName("TestProfile");
+		
+		Raid raid = new Raid(scanner.next());
 		
 		Path path = Paths.get(System.getProperty("user.home")+"\\My Documents\\OTracker");
 		if(Files.exists(path))
@@ -36,6 +41,7 @@ public class test {
 		thinger.println("AWW YIS");
 		thinger.close();
 		}
+		
 		
 	}
 }
