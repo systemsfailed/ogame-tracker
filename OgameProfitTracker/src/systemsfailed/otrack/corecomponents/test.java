@@ -1,42 +1,42 @@
 package systemsfailed.otrack.corecomponents;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 
 public class test {
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws FileNotFoundException
 	{
-		
-		String text = null;
-		String text2 = null;
-		
-		try {
-			text = new Scanner( new File("test.txt") ).useDelimiter("\\A").next();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			text2 = new Scanner( new File("testin") ).useDelimiter("\\A").next();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		Raid raid = new Raid(text);
-		Raid raid2 = new Raid(text2);
-		
+				
 		Profile pro = new Profile();
 		pro.setName("TestProfile");
 		
-		pro.addRaid(raid);
-		pro.addRaid(raid2);
+		Path path = Paths.get(System.getProperty("user.home")+"\\My Documents\\OTracker");
+		if(Files.exists(path))
+				System.out.printf("Her");
+		else
+			new File(path.toString()).mkdir();
 		
-		Profile pro2 = new Profile(pro.toString());
+		Path path2 = Paths.get(System.getProperty("user.home")+"\\My Documents\\OTracker\\hax.txt");
+
 		
-		System.out.printf("%s", pro2.getPlayers().get(0).getPlanets().get(0));
+		PrintWriter thinger;
+		
+		if(Files.exists(path2))
+			System.out.printf("Kay");
+		else
+		{
+		thinger = new PrintWriter(path2.toString());
+		thinger.println("AWW YIS");
+		thinger.close();
+		}
 		
 	}
 }
+

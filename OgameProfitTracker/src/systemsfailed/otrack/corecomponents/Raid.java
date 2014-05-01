@@ -103,60 +103,66 @@ public class Raid {
 	 * @throws IOException
 	 * 	Throws an IOException if there is a problem with the report given to the Raid
 	 */
-	public void generateRaid() throws IOException
+	public void generateRaid() throws IOException, IllegalArgumentException
 	{
-		int year, month, day;
-		planet = null;
-		String temp;
-		BufferedReader reader = new BufferedReader(new StringReader(report));
-		
-		temp = reader.readLine();
-		
-		day = Integer.parseInt(temp.substring(temp.indexOf("(")+1, temp.indexOf(".")));
-		
-		month = Integer.parseInt(temp.substring(temp.indexOf(".") + 1, temp.indexOf(".", temp.indexOf(".") + 1)));
-		
-		temp.replaceFirst(".", " ");
-		
-		year = Integer.parseInt(temp.substring(temp.indexOf(".", temp.indexOf(".") + 1) + 1, temp.indexOf(".", temp.indexOf(".") + 1) + 5)) - 1900;
-		
-		date = new Date(year, month, day);
-		
-		
-		while((temp = reader.readLine())!= null)
+		if(report.contains("Attacker")) //Checks to make sure that the report is a combat report
 		{
-			if(temp.contains("vs."))
+			int year, month, day;
+			planet = null;
+			String temp;
+			BufferedReader reader = new BufferedReader(new StringReader(report));
+		
+			temp = reader.readLine();
+		
+			day = Integer.parseInt(temp.substring(temp.indexOf("(")+1, temp.indexOf(".")));
+		
+			month = Integer.parseInt(temp.substring(temp.indexOf(".") + 1, temp.indexOf(".", temp.indexOf(".") + 1)));
+		
+			temp.replaceFirst(".", " ");
+		
+			year = Integer.parseInt(temp.substring(temp.indexOf(".", temp.indexOf(".") + 1) + 1, temp.indexOf(".", temp.indexOf(".") + 1) + 5)) - 1900;
+		
+			date = new Date(year, month, day);
+		
+		
+			while((temp = reader.readLine())!= null)
 			{
-				player = temp.substring(temp.indexOf("vs.") + 4, temp.length());
-			}
-			if(temp.contains(player + " [") & planet == null)
-			{
-				String[] location = temp.substring(temp.indexOf("[") + 1, temp.indexOf("]")).split(":");
-				planet = location[0] + ":" + location[1] + ":" + location[2];
-			}
-			if(temp.contains("metal,"))
-			{
-				metal = Integer.parseInt((temp.substring(temp.indexOf("captured") + 9, temp.indexOf("metal") - 1)).replaceAll("[/.]", ""));
-			}
-			if(temp.contains("crystal and"))
-			{
-				crystal = Integer.parseInt((temp.substring(temp.indexOf("metal") + 7, temp.indexOf("crystal") - 1)).replaceAll("[/.]", ""));
-			}
-			if(temp.contains("deuterium"))
-			{
-				deuterium = Integer.parseInt((temp.substring(temp.indexOf("and") + 4, temp.indexOf("deuterium") - 1)).replaceAll("[/.]", ""));
-			}
+				if(temp.contains("vs."))
+				{
+					player = temp.substring(temp.indexOf("vs.") + 4, temp.length());
+				}
+				if(temp.contains(player + " [") & planet == null)
+				{
+					String[] location = temp.substring(temp.indexOf("[") + 1, temp.indexOf("]")).split(":");
+					planet = location[0] + ":" + location[1] + ":" + location[2];
+				}
+				if(temp.contains("metal,"))
+				{
+					metal = Integer.parseInt((temp.substring(temp.indexOf("captured") + 9, temp.indexOf("metal") - 1)).replaceAll("[/.]", ""));
+				}
+				if(temp.contains("crystal and"))
+				{
+					crystal = Integer.parseInt((temp.substring(temp.indexOf("metal") + 7, temp.indexOf("crystal") - 1)).replaceAll("[/.]", ""));
+				}
+				if(temp.contains("deuterium"))
+				{
+					deuterium = Integer.parseInt((temp.substring(temp.indexOf("and") + 4, temp.indexOf("deuterium") - 1)).replaceAll("[/.]", ""));
+				}
 			
-			if(temp.contains("attacker lost "))
-			{
-				losses = Integer.parseInt((temp.substring(temp.indexOf("of ") + 3, temp.indexOf("units") - 1)).replaceAll("[/.]", ""));
-			}
-			
-			if(temp.contains("defender lost "))
-			{
-				damage = Integer.parseInt((temp.substring(temp.indexOf("of ") + 3, temp.indexOf("units") - 1)).replaceAll("[/.]", ""));
+				if(temp.contains("attacker lost "))
+				{
+					losses = Integer.parseInt((temp.substring(temp.indexOf("of ") + 3, temp.indexOf("units") - 1)).replaceAll("[/.]", ""));
+				}
+				
+				if(temp.contains("defender lost "))
+				{
+					damage = Integer.parseInt((temp.substring(temp.indexOf("of ") + 3, temp.indexOf("units") - 1)).replaceAll("[/.]", ""));
+				}
 			}
 		}
+		
+		else
+			throw new IllegalArgumentException();
 	
 	}
 	
