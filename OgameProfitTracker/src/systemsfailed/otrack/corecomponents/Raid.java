@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.sql.Date;
 
+import systemsfailed.otrack.guicore.AppWindow;
+
 
 public class Raid {
 
@@ -69,15 +71,12 @@ public class Raid {
 	 * Creates a Raid object from a single combat report
 	 * @param report
 	 * 	String representation of a combat report
+	 * @throws IOException 
+	 * @throws IllegalArgumentException 
 	 */
-	public Raid(String report)
+	public Raid(String report) throws IllegalArgumentException, IOException
 	{
-		try {
 			generateRaid(report);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 	}
 	
 	/**
@@ -105,6 +104,7 @@ public class Raid {
 	 * @throws IOException
 	 * 	Throws an IOException if there is a problem with the report given to the Raid
 	 */
+	
 	public void generateRaid(String report) throws IOException, IllegalArgumentException
 	{
 		if(report.contains("Attacker")) //Checks to make sure that the report is a combat report

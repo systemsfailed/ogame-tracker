@@ -477,8 +477,8 @@ public class Profile {
 			current = players.get(i);
 			for(int k = 0; k < current.getPlanets().size(); k++)
 			{
-				if(current.getPlanets().get(i).getNumRaids() > max.getNumRaids())
-					max = current.getPlanets().get(i);
+				if(current.getPlanets().get(k).getNumRaids() > max.getNumRaids())
+					max = current.getPlanets().get(k);
 			}
 		}
 		return max;
@@ -500,8 +500,8 @@ public class Profile {
 			current = players.get(i);
 			for(int k = 0; k < current.getPlanets().size(); k++)
 			{
-				if(current.getPlanets().get(i).getNetGains() > max.getNetGains())
-					max = current.getPlanets().get(i);
+				if(current.getPlanets().get(k).getNetGains() > max.getNetGains())
+					max = current.getPlanets().get(k);
 			}
 		}
 		return max;
@@ -523,8 +523,8 @@ public class Profile {
 			current = players.get(i);
 			for(int k = 0; k < current.getPlanets().size(); k++)
 			{
-				if(current.getPlanets().get(i).getDamage() > max.getDamage())
-					max = current.getPlanets().get(i);
+				if(current.getPlanets().get(k).getDamage() > max.getDamage())
+					max = current.getPlanets().get(k);
 			}
 		}
 		return max;
@@ -546,8 +546,8 @@ public class Profile {
 			current = players.get(i);
 			for(int k = 0; k < current.getPlanets().size(); k++)
 			{
-				if(current.getPlanets().get(i).getLosses() > max.getLosses())
-					max = current.getPlanets().get(i);
+				if(current.getPlanets().get(k).getLosses() > max.getLosses())
+					max = current.getPlanets().get(k);
 			}
 		}
 		return max;

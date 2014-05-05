@@ -23,6 +23,7 @@ import systemsfailed.otrack.corecomponents.Raid;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 public class CRInputPane extends JPanel {
 
@@ -118,11 +119,12 @@ public class CRInputPane extends JPanel {
 		
 			else
 			{
-				String[] inRaids; 
+				String[] inRaids = null; 
 				try{
 					inRaids = CRTextArea.getText().split("On "); //Splits all input into individual
-					for(int i = 1; i < inRaids.length; i++)		//Combat reports to be parsed seperately
-					{
+					System.out.printf("%s", inRaids.length);
+					for(int i = 1; i < inRaids.length; i++)		//Combat reports to be parsed separately
+					{										//Starts at to avoid blank space in front of the On(
 						Raid raid = new Raid(inRaids[i]);
 						if(!profile.contains(raid))  //Ensures the report hasn't already been entered
 						{
@@ -137,11 +139,18 @@ public class CRInputPane extends JPanel {
 			
 					}catch(Exception ex)
 					{
-						ex.printStackTrace();
+						ex.printStackTrace(AppWindow.errorLogPrint);
+						AppWindow.ERROR_LOG += AppWindow.errorLogWriter.toString() + "END EXCEPTION \n\n";
 						ConsoleTextArea.setText(ConsoleTextArea.getText() + "\nError: Invalid CR format. Invalid text will be skipped");
 					}
 			
 				CRTextArea.setText(null); //Clear input pane
+				
+				if(inRaids.length == 1) //Checks to see if any random text was input
+				{
+					ConsoleTextArea.setText(ConsoleTextArea.getText() + "\nError: Invalid CR format. Invalid text will be skipped");
+				}
+				
 				app.getOverviewPanel().update();//Updates Tables
 				app.getStatsPane().update();//Updates stats page
 		
