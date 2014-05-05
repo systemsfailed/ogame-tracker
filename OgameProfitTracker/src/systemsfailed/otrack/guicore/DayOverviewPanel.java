@@ -1,71 +1,97 @@
+/**
+* The <code>DayOverviewPanel</code> class creates an instance of a panel object which
+* contains a table that provides an overview of all of the variables of all day objects
+* held within a profile
+* 
+* @author Robert Massina
+*    e-mail: Systemsfailed@gmail.com
+**/
 package systemsfailed.otrack.guicore;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.swing.JPanel;
 
 import systemsfailed.otrack.corecomponents.Day;
 import systemsfailed.otrack.corecomponents.Profile;
-import systemsfailed.otrack.corecomponents.Raid;
 
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
+
+
+
 
 public class DayOverviewPanel extends JPanel {
-	private JTable table;
 	private Profile profile;
+	private ArrayList<Day> days;
+	private JTable table;
+	private Object[][]data;  //Data container for table
+	JScrollPane scrollPane;
+	private String[] cols =  //Colum names for table
+		{"Day",
+        "Net Gains",
+        "Total Metal",
+        "Total Crystal",
+        "Total Deut",
+        "Losses",
+        "Total Damage",
+        "# of Raids"};
+
+
 
 	/**
 	 * Create the panel.
-	 * @throws FileNotFoundException 
 	 */
-	public DayOverviewPanel(Profile profile) throws FileNotFoundException {
-		this.profile =  new Profile();
-		Scanner scanner = new Scanner(new File("testin")).useDelimiter("//A");
-		Raid raid = new Raid(scanner.next());
-		this.profile.addRaid(raid);
-		buildTable();
-		add(table);
-		table.setEnabled(false);
+	public DayOverviewPanel(Profile profile)
+	{
+		this.profile = profile;
+		setLayout(new BorderLayout(0, 0));
+		
+		scrollPane = new JScrollPane();
+		add(scrollPane, BorderLayout.CENTER);
+		buildTable();  //Constructs the data necessary for the table
+		table = new JTable(data, cols); //Constructs the table object
+		scrollPane.setViewportView(table); //Sets the table to be visible
 	
-
 	}
 	
+	/**
+	 * Constructs the multi dimensional array of Objects that a table requires to be built
+	 * Iterates through all of the days in the profile and extracts the variables to be displayed
+	 * 
+	 */
 	public void buildTable()
 	{
-		ArrayList<Day> days = profile.getDays();
-		Object[][] data = new Object[days.size() + 1][8];
-		data[0][0] = "Date";
-		data[0][1] = "Net Gain";
-		data[0][2] = "Metal";
+		days = profile.getDays();
+		data = new Object[days.size() + 1][8];
 		for(int i = 0; i < days.size(); i++)
 		{
+	
 			Day day = days.get(i);
-			data[i+1][0] = day.getDate().getMonth() + "-" + day.getDate().getDate() + "-" + (day.getDate().getYear() + 1900);
-			data[i+1][1] = day.getNetGains();
-			data[i+1][2] = day.getMetal();
-			data[i+1][3] = day.getCrystal();
-			data[i+1][4] = day.getDeuterium();
-			data[i+1][5] = day.getLosses();
-			data[i+1][6] = day.getDamage();
-			data[i+1][7] = day.getNumRaids();
-			
+			data[i][0] = day.getDate().getMonth() + "-" + day.getDate().getDate() + "-" + (day.getDate().getYear() + 1900);
+			data[i][1] = NumberFormat.getIntegerInstance().format(day.getNetGains());
+			data[i][2] = NumberFormat.getIntegerInstance().format(day.getMetal());
+			data[i][3] = NumberFormat.getIntegerInstance().format(day.getCrystal());
+			data[i][4] = NumberFormat.getIntegerInstance().format(day.getDeuterium());
+			data[i][5] = NumberFormat.getIntegerInstance().format(day.getLosses());
+			data[i][6] = NumberFormat.getIntegerInstance().format(day.getDamage());
+			data[i][7] = NumberFormat.getIntegerInstance().format(day.getNumRaids());
 		}
-		
-		String[] columnNames = {"Day",
-                "Net_Gains",
-                "Total_Metal",
-                "Total_Crystal",
-                "Total_Deut",
-                "Losses",
-                "Total_Damage",
-                "# of Raids"};
-		
-		table = new JTable(data, columnNames);
+				
 		
 	}
+	
+	public void update() //Udates the table with the new data
+	{
+		buildTable();
+		scrollPane.setViewportView(new JTable(data, cols));
+	}
 
+	public void setProfile(Profile profile) //Sets a new profile object to be used
+	{
+		this.profile = profile;
+	}
+	
 }

@@ -1,3 +1,11 @@
+/**
+* The <code>CRInputPane</code> class creates an instance of a panel object which
+* is used to interact with the user in order to import combat reports to be converted
+* to raids and sorted into days.
+* 
+* @author Robert Massina
+*    e-mail: Systemsfailed@gmail.com
+**/
 package systemsfailed.otrack.guicore;
 
 import javax.swing.JPanel;
@@ -9,7 +17,6 @@ import javax.swing.JTextArea;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 import systemsfailed.otrack.corecomponents.Profile;
 import systemsfailed.otrack.corecomponents.Raid;
@@ -20,22 +27,24 @@ import java.awt.event.ActionEvent;
 public class CRInputPane extends JPanel {
 
 	
-	private JPanel ConsolePanel;
-	private JScrollPane ConsoleScrollPane;
-	private JTextArea ConsoleTextArea;
-	private JPanel CRInputPanel;
-	private JScrollPane CRInputScrollPane;
+	private JPanel ConsolePanel; //Panel which displayes output to user
+	private JScrollPane ConsoleScrollPane; //Scroll panel which contains the console
+	private JTextArea ConsoleTextArea; //Text area that displays output
+	private JPanel CRInputPanel; //Panel to input CR's into
+	private JScrollPane CRInputScrollPane; 
 	private JTextArea CRTextArea;
 	private JPanel InputButtonPanel;
 	private JButton btnParse;
 	private JButton btnClear;
+	AppWindow app;
 	Profile profile;
 	
 	/**
 	 * Create the panel.
 	 */
-	public CRInputPane(Profile profile) {
+	public CRInputPane(Profile profile, AppWindow window) {
 		this.profile = profile;
+		app = window;
 		
 		setLayout(new GridLayout(1, 2, 0, 0));
 		
@@ -63,7 +72,7 @@ public class CRInputPane extends JPanel {
 		InputButtonPanel = new JPanel();
 		CRInputPanel.add(InputButtonPanel);
 		
-		btnParse = new JButton("Parse");
+		btnParse = new JButton("Parse"); //Parse button to read combat reports
 		btnParse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				parseReports();
@@ -73,7 +82,7 @@ public class CRInputPane extends JPanel {
 		
 		btnClear = new JButton("Clear");
 		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {//Clear input text window
 				CRTextArea.setText(null);
 			}
 		});
@@ -102,32 +111,69 @@ public class CRInputPane extends JPanel {
 	
 		public void parseReports()
 		{
-			if(profile == null)
+			if(profile == null) //Checks for null profile to avoid exceptions
 			{
 				JOptionPane.showMessageDialog(null, "Cannot parse, no profile loaded");
 			}
 		
 			else
 			{
-				String[] inRaids;
+				String[] inRaids; 
 				try{
-					inRaids = CRTextArea.getText().split("On ");
-					for(int i = 1; i < inRaids.length; i++)
+					inRaids = CRTextArea.getText().split("On "); //Splits all input into individual
+					for(int i = 1; i < inRaids.length; i++)		//Combat reports to be parsed seperately
 					{
-						profile.addRaid(new Raid(inRaids[i]));
-						ConsoleTextArea.setText(ConsoleTextArea.getText() + "\n" + i + " Report Added Sucessfully");
+						Raid raid = new Raid(inRaids[i]);
+						if(!profile.contains(raid))  //Ensures the report hasn't already been entered
+						{
+							profile.addRaid(raid);
+							ConsoleTextArea.setText(ConsoleTextArea.getText() + "\n#" + i + " Report Added Sucessfully");
+						}
+						else
+							ConsoleTextArea.setText(ConsoleTextArea.getText() + "\n#" + i + " Duplicate report ignored");
+
+						
 					}
 			
 					}catch(Exception ex)
 					{
+						ex.printStackTrace();
 						ConsoleTextArea.setText(ConsoleTextArea.getText() + "\nError: Invalid CR format. Invalid text will be skipped");
 					}
 			
-				CRTextArea.setText(null);
+				CRTextArea.setText(null); //Clear input pane
+				app.getOverviewPanel().update();//Updates Tables
+				app.getStatsPane().update();//Updates stats page
+		
 			}
 		
 		}
-
+		
+		/**
+		 * Updates the profile with a reference to a new one
+		 * @param profile
+		 * 	New profile to be used
+		 */
+		public void setProfile(Profile profile)
+		{
+			this.profile = profile;
+		}
+		/**
+		 * Clears the text in the input area
+		 */
+		public void clearText()
+		{
+			ConsoleTextArea.setText("");
+		}
+		/**
+		 * Sets the text of the console to the input
+		 * @param text
+		 * 	New text for the console pane
+		 */
+		public void setText(String text)
+		{
+			ConsoleTextArea.setText(text);
+		}
 	}
 	
 

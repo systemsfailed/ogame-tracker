@@ -25,7 +25,6 @@ public class DateComparator implements Comparator<Day> {
 	* 	The day to compare with
 	* 
 	**/
-	
 	public int compare(Day d1, Day d2)
 	{
 		return d1.getDate().compareTo(d2.getDate());

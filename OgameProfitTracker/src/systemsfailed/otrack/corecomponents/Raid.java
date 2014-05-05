@@ -21,7 +21,6 @@ public class Raid {
 	private int metal,crystal,deuterium;
 	private int losses, damage;
 	
-	private String report;
 	private String player, planet;
 	public Date date;
 	
@@ -35,6 +34,11 @@ public class Raid {
 	
 	public int getDeuterium() {
 		return deuterium;
+	}
+	
+	public int getNetGains()
+	{
+		return metal + crystal + deuterium - losses;
 	}
 
 	public int getLosses() {
@@ -68,9 +72,8 @@ public class Raid {
 	 */
 	public Raid(String report)
 	{
-		this.report = report;
 		try {
-			generateRaid();
+			generateRaid(report);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -93,7 +96,6 @@ public class Raid {
 		damage = Integer.parseInt(in[7]);
 		player = in[8];
 		planet = in[9];
-		report = in[10];
 	}
 	
 	/**
@@ -103,7 +105,7 @@ public class Raid {
 	 * @throws IOException
 	 * 	Throws an IOException if there is a problem with the report given to the Raid
 	 */
-	public void generateRaid() throws IOException, IllegalArgumentException
+	public void generateRaid(String report) throws IOException, IllegalArgumentException
 	{
 		if(report.contains("Attacker")) //Checks to make sure that the report is a combat report
 		{
@@ -123,9 +125,7 @@ public class Raid {
 			year = Integer.parseInt(temp.substring(temp.indexOf(".", temp.indexOf(".") + 1) + 1, temp.indexOf(".", temp.indexOf(".") + 1) + 5)) - 1900;
 		
 			date = new Date(year, month, day);
-		
-			System.out.printf("%d %d %d", date.getMonth(), date.getDate(), date.getYear() + 1900);
-		
+				
 			while((temp = reader.readLine())!= null)
 			{
 				if(temp.contains("vs."))
@@ -159,12 +159,28 @@ public class Raid {
 				{
 					damage = Integer.parseInt((temp.substring(temp.indexOf("of ") + 3, temp.indexOf("units") - 1)).replaceAll("[/.]", ""));
 				}
+				
+				if(temp.contains("float "))
+				{
+					metal += Integer.parseInt((temp.substring(temp.indexOf("float ") + 6, temp.indexOf("metal") - 1)).replaceAll("[/.]", ""));
+					crystal += Integer.parseInt((temp.substring(temp.indexOf("and ") + 4, temp.indexOf("crystal") - 1)).replaceAll("[/.]", ""));
+				}
 			}
 		}
 		
 		else
 			throw new IllegalArgumentException();
 	
+	}
+	
+	public boolean equals(Raid raid)
+	{
+		if(metal == raid.getMetal() & (crystal == raid.getCrystal()) &
+				(deuterium == raid.getDeuterium()) & player.equals(raid.getPlayer())
+				& planet.equals(raid.getPlanet()) & date.equals(raid.getDate()))
+				return true;
+		else
+			return false;
 	}
 	
 	/**
@@ -175,7 +191,7 @@ public class Raid {
 	{
 		return "Raid" + date.getDay() + "-" + date.getMonth() + "-" + date.getYear()
 				+ "-" + metal + "-" + crystal + "-" + deuterium + "-"
-				+ losses + "-" + damage + "-" + player + "-" + planet + "-" + report;
+				+ losses + "-" + damage + "-" + player + "-" + planet;
 	}
 	
 	

@@ -14,24 +14,37 @@ package systemsfailed.otrack.corecomponents;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
-
 public class Profile {
 
-	private String name;
-	private ArrayList<Day> days;
-	private ArrayList<Player> players;
+	private String name;		//Name of the profile
+	private ArrayList<Day> days; //Array List containing all days recorded
+	private ArrayList<Player> players; //Array list containing all recorded players
 	
+	/**
+	 * @return
+	 * 	Returns the player profile's save name
+	 */
 	public String getName()
 	{
 		return name;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * 	Returns an the <code>ArrayList</code> of all contained days
+	 * 
+	 */
 	public ArrayList<Day> getDays()
 	{
 		return days;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * 	Returns the <code>ArrayList</code> of all contained players
+	 */
 	public ArrayList<Player> getPlayers()
 	{
 		return players;
@@ -155,7 +168,7 @@ public class Profile {
 	}
 	
 	/**
-	 * Displays the total amount of raids performed on thsi profile
+	 * Displays the total amount of raids performed on this profile
 	 * 
 	 * @return
 	 * 	Total number of raids done on this profile
@@ -191,17 +204,17 @@ public class Profile {
 	 * the Days array as well as the Player's array for sorting
 	 * @param raid
 	 * 	A raid object to be added to the profile. Added to both players and days array
+	 * @return 
 	 */
 	public void addRaid(Raid raid)
 	{
-		boolean added = false;
-		
 		if(days.isEmpty())
 		{
 			days.add(new Day(raid));
 		}
 		else
 		{
+			boolean added = false;
 			for(int i = 0; i < days.size(); i++)
 			{
 				if(raid.getDate().equals(days.get(i).getDate()))
@@ -210,34 +223,33 @@ public class Profile {
 					added = true;
 					break;
 				}
-			
 			}
 		
 			if(!added)
 			{ 
-				days.add(new Day(raid));
-				sortDays();
+			days.add(new Day(raid));
+			sortDays();
 			}
 		}
-			boolean found = false;
 			
-			if(players.isEmpty())
-				players.add(new Player(raid));
-
-			else
+		boolean found = false;	
+		if(players.isEmpty())
+			players.add(new Player(raid));
+		else
+		{
+			for(int i = 0; i < players.size(); i++)
 			{
-				for(int i = 0; i < players.size(); i++)
+				if(players.get(i).getName().equals(raid.getPlayer()))
 				{
-					if(players.get(i).getName() == raid.getPlayer())
-					{
-						players.get(i).addRaid(raid);
-						found = true;
-					}
+					players.get(i).addRaid(raid);
+					found = true;
 				}
-				if(!found)
-					players.add(new Player(raid));
 			}
+			if(!found)
+				players.add(new Player(raid));				
+		}
 	}
+	
 	/**
 	 * A helper array for the mass combat report input, same as AddRaid but with
 	 * no sorting in order to prevent multiple sorts in a row
@@ -247,14 +259,13 @@ public class Profile {
 	 */
 	public void addRaidHelper(Raid raid)
 	{
-		boolean added = false;
-		
 		if(days.isEmpty())
 		{
 			days.add(new Day(raid));
 		}
 		else
 		{
+			boolean added = false;
 			for(int i = 0; i < days.size(); i++)
 			{
 				if(raid.getDate().equals(days.get(i).getDate()))
@@ -263,32 +274,31 @@ public class Profile {
 					added = true;
 					break;
 				}
-			
 			}
 		
 			if(!added)
 			{ 
-				days.add(new Day(raid));
+			days.add(new Day(raid));
+			sortDays();
 			}
 		}
-			boolean found = false;
 			
-			if(players.isEmpty())
-				players.add(new Player(raid));
-
-			else
+		boolean found = false;	
+		if(players.isEmpty())
+			players.add(new Player(raid));
+		else
+		{
+			for(int i = 0; i < players.size(); i++)
 			{
-				for(int i = 0; i < players.size(); i++)
+				if(players.get(i).getName().equals(raid.getPlayer()))
 				{
-					if(players.get(i).getName() == raid.getPlayer())
-					{
-						players.get(i).addRaid(raid);
-						found = true;
-					}
+					players.get(i).addRaid(raid);
+					found = true;
 				}
-				if(!found)
-					players.add(new Player(raid));
 			}
+			if(!found)
+				players.add(new Player(raid));				
+		}
 	}
 	
 	/**
@@ -317,7 +327,302 @@ public class Profile {
 	}
 	
 	/**
-	 * Default constructor, initalizes the arrays
+	 * Returns the total number of planets raided
+	 * @return
+	 * 	Returns sum of all players planets
+	 */
+	public int getNumPlanets()
+	{
+		int sum = 0;
+		for(int i = 0; i < players.size(); i++)
+		{
+			sum += players.get(i).getPlanets().size();
+		}
+		return sum;
+	}
+	
+	/**
+	 * Checks the array of days to find the one with the most raids performed
+	 * 
+	 * @return
+	 * 	Returns the day with the most raids
+	 */
+	public Day mostRaids()
+	{
+		Day max = days.get(0);
+		for(int i = 0; i < days.size(); i++)
+			if(days.get(i).getNumRaids() > max.getNumRaids())
+				max = days.get(i);
+		return max;
+	}
+	
+	/**
+	 * Checks the array of days to find the one with the most net gain
+	 * 
+	 * @return
+	 * 	Return the day with the most net gain
+	 */
+	public Day mostProfit()
+	{
+		Day max = days.get(0);
+		for(int i = 0; i < days.size(); i++)
+			if(days.get(i).getNetGains() > max.getNetGains())
+				max = days.get(i);
+		return max;
+	}
+	
+	/**
+	 * Checks the array of days to find the one with the most damage done
+	 * 
+	 * @return
+	 * 	Return the day with the most damage done
+	 */
+	public Day mostDamage()
+	{
+		Day max = days.get(0);
+		for(int i = 0; i < days.size(); i++)
+			if(days.get(i).getDamage() > max.getDamage())
+				max = days.get(i);
+		return max;
+	}
+	
+	/**
+	 * Checks the array of days to find the one with the most losses taken
+	 * 
+	 * @return
+	 * 	Return the day with the most losses taken
+	 */
+	public Day mostLoss()
+	{
+		Day max = days.get(0);
+		for(int i = 0; i < days.size(); i++)
+			if(days.get(i).getLosses() > max.getLosses())
+				max = days.get(i);
+		return max;
+	}
+	
+	/**
+	 * Checks the array of players to find the one with the most raids
+	 * 
+	 * @return
+	 * 	Return the player with the most raids
+	 */
+	public Player playerMostRaids()
+	{
+		Player max = players.get(0);
+		for(int i = 0; i < players.size(); i++)
+			if(players.get(i).getNumRaids() > max.getNumRaids())
+				max = players.get(i);
+		return max;
+	}
+	
+	/**
+	 * Checks the array of players to find the one with the most profit
+	 * 
+	 * @return
+	 * 	Return the day with the most profit
+	 */
+	public Player playerMostProfit()
+	{
+		Player max = players.get(0);
+		for(int i = 0; i < players.size(); i++)
+			if(players.get(i).getNetGains() > max.getNetGains())
+				max = players.get(i);
+		return max;
+	}
+	
+	/**
+	 * Checks the array of players to find the one with the most damage done
+	 * 
+	 * @return
+	 * 	Return the day with the most damage done
+	 */
+	public Player playerMostDamage()
+	{
+		Player max = players.get(0);
+		for(int i = 0; i < players.size(); i++)
+			if(players.get(i).getDamage() > max.getDamage())
+				max = players.get(i);
+		return max;
+	}
+	
+	/**
+	 * Checks the array of players to find the one with the most losses
+	 * 
+	 * @return
+	 * 	Return the day with the most losses
+	 */
+	public Player playerMostLoss()
+	{
+		Player max = players.get(0);
+		for(int i = 0; i < players.size(); i++)
+			if(players.get(i).getLosses() > max.getLosses())
+				max = players.get(i);
+		return max;
+	}
+	
+	/**
+	 * Checks the array of planets to find the one with the most raids
+	 * 
+	 * @return
+	 * 	Return the planet with the most raids
+	 */
+	public Planet planetMostRaids()
+	{
+		Planet max = players.get(0).getPlanets().get(0);
+		Player current;
+		
+		for(int i = 0; i < players.size(); i++)
+		{
+			current = players.get(i);
+			for(int k = 0; k < current.getPlanets().size(); k++)
+			{
+				if(current.getPlanets().get(i).getNumRaids() > max.getNumRaids())
+					max = current.getPlanets().get(i);
+			}
+		}
+		return max;
+	}
+	
+	/**
+	 * Checks the array of planets to find the one with the most profit
+	 * 
+	 * @return
+	 * 	Return the planet with the most profits
+	 */
+	public Planet planetMostProfit()
+	{
+		Planet max = players.get(0).getPlanets().get(0);
+		Player current;
+		
+		for(int i = 0; i < players.size(); i++)
+		{
+			current = players.get(i);
+			for(int k = 0; k < current.getPlanets().size(); k++)
+			{
+				if(current.getPlanets().get(i).getNetGains() > max.getNetGains())
+					max = current.getPlanets().get(i);
+			}
+		}
+		return max;
+	}
+	
+	/**
+	 * Checks the array of planets to find the one with the most damage
+	 * 
+	 * @return
+	 * 	Return the planet with the most damage
+	 */
+	public Planet planetMostDamage()
+	{
+		Planet max = players.get(0).getPlanets().get(0);
+		Player current;
+		
+		for(int i = 0; i < players.size(); i++)
+		{
+			current = players.get(i);
+			for(int k = 0; k < current.getPlanets().size(); k++)
+			{
+				if(current.getPlanets().get(i).getDamage() > max.getDamage())
+					max = current.getPlanets().get(i);
+			}
+		}
+		return max;
+	}
+	
+	/**
+	 * Checks the array of planets to find the one with the most losses
+	 * 
+	 * @return
+	 * 	Return the planet with the most losses
+	 */
+	public Planet planetMostLosses()
+	{
+		Planet max = players.get(0).getPlanets().get(0);
+		Player current;
+		
+		for(int i = 0; i < players.size(); i++)
+		{
+			current = players.get(i);
+			for(int k = 0; k < current.getPlanets().size(); k++)
+			{
+				if(current.getPlanets().get(i).getLosses() > max.getLosses())
+					max = current.getPlanets().get(i);
+			}
+		}
+		return max;
+	}
+	
+	/**
+	 * Checks the array of raids to find the most profitable
+	 * 
+	 * @return
+	 * 	Return the most profitable raid
+	 */
+	public Raid raidMostProfit()
+	{
+		Raid max = days.get(0).getMostProfit();
+		for(int i = 0; i < days.size(); i++)
+		{
+			if(max.getNetGains() < days.get(i).getMostProfit().getNetGains())
+				max = days.get(i).getMostProfit();
+		}
+		
+		return max;
+	}
+
+	/**
+	 * Checks the array of raids to find the one with the highest damage
+	 * 
+	 * @return
+	 * 	Return the most damaging raid
+	 */
+	public Raid raidMostDamage()
+	{
+		Raid max = days.get(0).getMostDamage();
+		for(int i = 0; i < days.size(); i++)
+		{
+			if(max.getDamage() < days.get(i).getMostDamage().getDamage())
+				max = days.get(i).getMostDamage();
+		}
+		
+		return max;
+	}
+	
+	/**
+	 * Checks the array of raids to find the one with the highest losses
+	 * 
+	 * @return
+	 * 	Return the most loss inducing raid
+	 */
+	public Raid raidMostLoss()
+	{
+		Raid max = days.get(0).getMostLoss();
+		for(int i = 0; i < days.size(); i++)
+		{
+			if(max.getLosses() < days.get(i).getMostLoss().getLosses())
+				max = days.get(i).getMostLoss();
+		}
+		
+		return max;
+	}
+	
+	public boolean contains(Raid raid)
+	{
+		boolean contains = false;
+		for(int i = 0; i < days.size(); i++)
+		{
+			if(days.get(i).contains(raid))
+			{
+				contains = true;
+			}
+		}
+		return contains;
+	}
+
+	
+	/**
+	 * Default constructor, initializes the arrays
 	 */
 	public Profile()
 	{
@@ -352,6 +657,8 @@ public class Profile {
 	/**
 	 * Creates a string representation of the Profile object.
 	 * Used to create a save file that can be used to reconstruct a profile
+	 * @return
+	 * 	Returns a string form of this profile, which is used to create a save file
 	 */
 	
 	public String toString()

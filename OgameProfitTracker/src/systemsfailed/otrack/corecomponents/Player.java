@@ -14,59 +14,39 @@ package systemsfailed.otrack.corecomponents;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Player {
+public class Player extends StorageBase{
 	
-	private int metal,crystal,deuterium,damage;
-	private ArrayList<String> planets;  //A list of all of the player's planets
-	private ArrayList<Raid> raids; //A list containing all raids aginst this player
+	private ArrayList<Planet> planets;  //A list of all of the player's planets
 	private String name;
 	
-	public String getName() 
+	/** 
+	 * @return
+	 * 	Returns the player's name
+	 */
+	public String getName()
 	{
 		return name;
 	}
-
-	public int getMetal() 
-	{
-		return metal;
-	}
-
-	public int getCrystal() 
-	{
-		return crystal;
-	}
-
-	public int getDeuterium() 
-	{
-		return deuterium;
-	}
-
-	public int getDamage() 
-	{
-		return damage;
-	}
-
-	public ArrayList<String> getPlanets() 
+	
+	/**
+	 * @return
+	 * 	Returns an <code>ArrayList</code> of planet objects
+	 */
+	public ArrayList<Planet> getPlanets() 
 	{
 		return planets;
 	}
-
+	
+	/**
+	 * @return
+	 * 	Returns an <code>ArrayList</code> of the raids on this
+	 * 	planet
+	 */
 	public ArrayList<Raid> getRaids()
 	{
 		return raids;
 	}
 	
-	
-	/**
-	 * Adds a planet to this player
-	 * 
-	 * @param s
-	 * 	String representation of a planet belonging to this player
-	 */
-	public void addPlanet(String s)
-	{
-		planets.add(s);
-	}
 	
 	/**
 	 * Checks the player object to see if it contains a planet in it's
@@ -97,11 +77,22 @@ public class Player {
 	 */
 	public void addRaid(Raid raid)
 	{
+		boolean found = false;
 		raids.add(raid);
 		Collections.sort(raids, new RaidComparator());
 		update();
-		if(!planets.contains(raid.getPlanet()))
-				planets.add(raid.getPlanet());
+		
+		for(int i = 0; i < planets.size(); i++)
+		{
+			if(planets.get(i).getName().equals(raid.getPlanet()))
+			{
+				planets.get(i).addRaid(raid);
+				found = true;
+			}
+		}
+		
+		if(!found)
+				planets.add(new Planet(raid));
 	}
 	
 	/**
@@ -116,22 +107,6 @@ public class Player {
 		update();
 	}
 	
-	/**
-	 * Updates all variables in this Player object by iterating through
-	 * all of the raids and summing up all of their variables
-	 * 
-	 */
-	public void update()
-	{
-		metal = crystal = deuterium = damage = 0;
-		for(int i = 0; i < raids.size(); i++)
-		{
-			metal += raids.get(i).getMetal();
-			crystal += raids.get(i).getCrystal();
-			deuterium += raids.get(i).getDeuterium();
-			damage += raids.get(i).getDamage();
-		}
-	}
 	
 	/**
 	 * Creates a new instance of <code>Player</code>
@@ -143,10 +118,12 @@ public class Player {
 	public Player(Raid raid)
 	{
 		name = raid.getPlayer();
-		planets = new ArrayList<String>();
+		planets = new ArrayList<Planet>();
 		raids = new ArrayList<Raid>();
 		addRaid(raid);
 	}
+
+	
 	
 	
 
