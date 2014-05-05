@@ -18,3 +18,15 @@ Progress Log
 	-- Edited Raid generation to reduce number of lines
 	-- Fixed Date not being created when reading from 
 		Raid ToString() method
+5/5
+	--GUI completed
+	--Added Statistics panel
+	--Added Error logging system
+		--Automatically creates a .log file with stack trace
+	--Save/Load System finished
+	--All Core mechanics complete
+	TODO:
+		-New Panel on GUI
+			-Allows for user input of mine levels
+			-Will compare mine production per day/week/month
+				-to user's raid production from same time
