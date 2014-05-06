@@ -34,6 +34,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -71,18 +72,21 @@ public class AppWindow extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
+			try{ 
+				saveDir = new File(new File(AppWindow.class.getProtectionDomain()
+						.getCodeSource().getLocation().toURI().getPath()).toString()
+						.replace("Otrack.jar", "")+"Saves\\");  //Checks to see if a save folder
+				if (!saveDir.exists()) 							//Exists in the current directory
+					saveDir.mkdir();  							//If not it will create one
 					
-					saveDir = new File(System.getProperty("user.dir")+"\\Saves\\"); //Checks to see if a save folder
-					if (!saveDir.exists()) 												//Exists in the current directory
-						saveDir.mkdir();  												//If not it will create one
+				logDir = new File(new File(AppWindow.class.getProtectionDomain()
+						.getCodeSource().getLocation().toURI().getPath()).toString()
+						.replace("Otrack.jar", "")+"Logs\\"); //Checks to see if a logs folder		
+				if (!logDir.exists()) 						  //Exists in the current directory
+					logDir.mkdir();  						  //If not it will create one
 					
-					logDir = new File(System.getProperty("user.dir")+"\\Logs\\"); //Checks to see if a logs folder
-					if (!logDir.exists()) 												//Exists in the current directory
-						logDir.mkdir();  												//If not it will create one
-					
-					errorLogWriter = new StringWriter();			//Createss a method of printing exceptions
-					errorLogPrint = new PrintWriter(errorLogWriter); //Reads exception stack traces
+				errorLogWriter = new StringWriter();			//Creates a method of printing exceptions
+				errorLogPrint = new PrintWriter(errorLogWriter); //Reads exception stack traces
 					
 					Runtime.getRuntime().addShutdownHook(new Thread() //Creates a shutdown hook to print error logs
 					{
@@ -92,18 +96,20 @@ public class AppWindow extends JFrame {
 							{
 								Calendar cal = Calendar.getInstance();
 								DateFormat dateFormat = new SimpleDateFormat("MM-DD-yyy HH-mm");
-								try {										//Creates a new file with error log contents
-									FileWriter writer = new FileWriter(new File(System.getProperty("user.dir")+
-											"\\Logs\\" + dateFormat.format(cal.getTime()) + LOG_EXTENSION));
+								
+								try {							//Creates a new file with error log contents
+									FileWriter writer = new FileWriter(new File(getClass().getProtectionDomain()
+											.getCodeSource().getLocation() + "\\Logs\\" + 
+											dateFormat.format(cal.getTime()) + LOG_EXTENSION));
 									writer.write(ERROR_LOG);
 									writer.close();
-									} catch (IOException e) {
+									} catch (IOException e) 
+									{
 										e.printStackTrace();
 									}
 							}
 						}
 					});
-					
 					AppWindow frame = new AppWindow();
 					frame.setVisible(true);
 				} catch (Exception e) {

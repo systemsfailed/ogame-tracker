@@ -442,7 +442,6 @@ public class StatsPane extends JPanel {
 		tempPlanet = profile.planetMostLosses();
 		lblMostLossesPlanet.setText(NumberFormat.getIntegerInstance().format(tempPlanet.getLosses()) + " (" + tempPlanet.getName() + ")");
 		
-		System.out.printf("%s", profile.getRaids() / profile.getPlayers().size());
 		sumTotalRaids.setText(NumberFormat.getIntegerInstance().format(profile.getRaids()));
 		lblRaidPerDay.setText(NumberFormat.getIntegerInstance().format(profile.getRaids() / profile.getDays().size()));
 		lblRaidPerPlayer.setText(NumberFormat.getIntegerInstance().format(profile.getRaids() / profile.getNumPlayers()));

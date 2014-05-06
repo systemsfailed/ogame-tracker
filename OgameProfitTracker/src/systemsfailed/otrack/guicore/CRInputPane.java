@@ -122,18 +122,19 @@ public class CRInputPane extends JPanel {
 				String[] inRaids = null; 
 				try{
 					inRaids = CRTextArea.getText().split("On "); //Splits all input into individual
-					System.out.printf("%s", inRaids.length);
-					for(int i = 1; i < inRaids.length; i++)		//Combat reports to be parsed separately
+					for(int i = 0; i < inRaids.length; i++)		//Combat reports to be parsed separately
 					{										//Starts at to avoid blank space in front of the On(
 						Raid raid = new Raid(inRaids[i]);
-						if(!profile.contains(raid))  //Ensures the report hasn't already been entered
+						if(inRaids[i] != null)
 						{
-							profile.addRaid(raid);
-							ConsoleTextArea.setText(ConsoleTextArea.getText() + "\n#" + i + " Report Added Sucessfully");
+							if(!profile.contains(raid))  //Ensures the report hasn't already been entered
+							{
+								profile.addRaid(raid);
+								ConsoleTextArea.setText(ConsoleTextArea.getText() + "\n#" + i + " Report Added Sucessfully");
+							}
+							else
+								ConsoleTextArea.setText(ConsoleTextArea.getText() + "\n#" + i + " Duplicate report ignored");
 						}
-						else
-							ConsoleTextArea.setText(ConsoleTextArea.getText() + "\n#" + i + " Duplicate report ignored");
-
 						
 					}
 			
@@ -146,14 +147,11 @@ public class CRInputPane extends JPanel {
 			
 				CRTextArea.setText(null); //Clear input pane
 				
-				if(inRaids.length == 1) //Checks to see if any random text was input
+				if(profile.getDays().size() != 0)
 				{
-					ConsoleTextArea.setText(ConsoleTextArea.getText() + "\nError: Invalid CR format. Invalid text will be skipped");
-				}
-				
 				app.getOverviewPanel().update();//Updates Tables
 				app.getStatsPane().update();//Updates stats page
-		
+				}
 			}
 		
 		}

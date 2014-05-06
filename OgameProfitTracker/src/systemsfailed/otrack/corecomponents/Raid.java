@@ -128,9 +128,9 @@ public class Raid {
 				
 			while((temp = reader.readLine())!= null)
 			{
-				if(temp.contains("vs."))
+				if(temp.contains("VS."))
 				{
-					player = temp.substring(temp.indexOf("vs.") + 4, temp.length());
+					player = temp.substring(temp.indexOf("VS.") + 4, temp.length());
 				}
 				if(temp.contains(player + " [") & planet == null)
 				{
@@ -166,6 +166,8 @@ public class Raid {
 					crystal += Integer.parseInt((temp.substring(temp.indexOf("and ") + 4, temp.indexOf("crystal") - 1)).replaceAll("[/.]", ""));
 				}
 			}
+			if(planet == null)
+				planet = player + "UP";
 		}
 		
 		else
@@ -177,7 +179,7 @@ public class Raid {
 	{
 		if(metal == raid.getMetal() & (crystal == raid.getCrystal()) &
 				(deuterium == raid.getDeuterium()) & player.equals(raid.getPlayer())
-				& planet.equals(raid.getPlanet()) & date.equals(raid.getDate()))
+				& planet.equals(raid.getPlanet()))
 				return true;
 		else
 			return false;
